@@ -11,13 +11,14 @@ public class HomeWorkXO {
     private static int countFigure = 3;
     private static int step = 0;
     private static final Scanner SC = new Scanner(System.in);
+    private static int flag = 0;
 
 
     public static void main(String[] args) {
 
         System.out.println("Введите 1 для выбора поля 3х3 и кол-во фишек 3");
         System.out.println("Введите 2 для выбора поля 5х5 и кол-во фишек 4");
-        int flag = 0;
+
         if (SC.hasNextInt()) {
             flag = SC.nextInt();
         }
@@ -55,36 +56,142 @@ public class HomeWorkXO {
 
 
     private static boolean isWin(char dot) {
+        if (flag == 2) {
+            for (int i = 0; i < mapSize - 1; i++) {
+                int horizon = 0;
+                int vertical = 0;
+                int LeftDiagonal = 0;
+                int rightDiagonal = countFigure - 1;
 
-        for (int i = 0; i < mapSize; i++) {
-            int horizon = 0;
-            int vertical = 0;
-            int LeftDiagonal = 0;
-            int rightDiagonal  = countFigure-1;
+                for (int j = 0; j < mapSize - 1; j++) {
+                    if (map[i][j] == dot) {
+                        horizon += 1;
+                    }
+                    if (map[j][i] == dot) {
+                        vertical += 1;
+                    }
+                    if (map[j][j] == dot) {
+                        LeftDiagonal += 1;
+                    }
+                    if (map[j][rightDiagonal] == dot) {
+                        rightDiagonal -= 1;
+                    }
+                }
+                if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == -1)) {
+                    return true;
+                }
 
-            for (int j = 0; j < mapSize; j++) {
-                if (map[i][j] == dot) {
-                    horizon += 1;
-                }
-                if (map[j][i] == dot) {
-                    vertical += 1;
-                }
-                if (map[j][j] == dot) {
-                    LeftDiagonal += 1;
-                }
-                if (map[j][rightDiagonal] == dot) {
-                    rightDiagonal -= 1;
-                }
             }
-            if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == -1)) {
-                return true;
+            for (int i = 1; i < mapSize; i++) {
+                int horizon = 0;
+                int vertical = 0;
+                int LeftDiagonal = 0;
+                int rightDiagonal = countFigure; // баг (countFigure - 1)
+
+                for (int j = 1; j < mapSize; j++) {
+                    if (map[i][j] == dot) {
+                        horizon += 1;
+                    }
+                    if (map[j][i] == dot) {
+                        vertical += 1;
+                    }
+                    if (map[j][j] == dot) {
+                        LeftDiagonal += 1;
+                    }
+                    if (map[j][rightDiagonal] == dot) {
+                        rightDiagonal -= 1;
+                    }
+                }
+                if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == 0)) {     // баг rightDiagonal == -1
+                    return true;
+                }
+
             }
 
+            for (int i = 1; i < mapSize; i++) {
+                int horizon = 0;
+                int vertical = 0;
+                int LeftDiagonal = 0;
+                int rightDiagonal = countFigure - 1;
+
+                for (int j = 0; j < mapSize-1; j++) {
+                    if (map[i][j] == dot) {
+                        horizon += 1;
+                    }
+                    if (map[j+1][i-1] == dot) {                // баг
+                        vertical += 1;
+                    }
+                    if (map[j+1][j] == dot) {                   // баг
+                        LeftDiagonal += 1;
+                    }
+                    if (map[j+1][rightDiagonal] == dot) {
+                        rightDiagonal -= 1;
+                    }
+                }
+                if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == -1)) {
+                    return true;
+                }
+
+            }
+
+            for (int i = 0; i < mapSize-1; i++) {
+                int horizon = 0;
+                int vertical = 0;
+                int LeftDiagonal = 0;
+                int rightDiagonal = countFigure;
+
+                for (int j = 1; j < mapSize; j++) {
+                    if (map[i][j] == dot) {
+                        horizon += 1;
+                    }
+                    if (map[j-1][i+1] == dot) {                        // баг
+                        vertical += 1;
+                    }
+                    if (map[j-1][j] == dot) {							// баг
+                        LeftDiagonal += 1;
+                    }
+                    if (map[j-1][rightDiagonal] == dot) {				// баг
+                        rightDiagonal -= 1;
+                    }
+                }
+                if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == 0)) {
+                    return true;
+                }
+
+            }
+
+            return false;
         }
+        else {
+            for (int i = 0; i < mapSize; i++) {
+                int horizon = 0;
+                int vertical = 0;
+                int LeftDiagonal = 0;
+                int rightDiagonal = countFigure - 1;
 
-        return false;
+                for (int j = 0; j < mapSize; j++) {
+                    if (map[i][j] == dot) {
+                        horizon += 1;
+                    }
+                    if (map[j][i] == dot) {
+                        vertical += 1;
+                    }
+                    if (map[j][j] == dot) {
+                        LeftDiagonal += 1;
+                    }
+                    if (map[j][rightDiagonal] == dot) {
+                        rightDiagonal -= 1;
+                    }
+                }
+                if ((horizon == countFigure) || (vertical == countFigure) || (LeftDiagonal == countFigure) || (rightDiagonal == -1)) {
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
     }
-
 
     private static boolean Draw() {
         for (int i = 0; i < map.length; i++) {
